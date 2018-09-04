@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+<style type="text/css">
+    body{
+       font-family: cursive;
+        background-color: grey;
+    }
+    #show{
+        width:350px;
+        height:auto;
+        margin:30px auto 50px;
+        padding:50px;
+        position: relative;
+        background-color:#EEE;
+        color:#333;
+        border:2px solid crimson;
+        border-radius:40px 0 40px 0;
+    }
+    h1{
+        text-align: center;
+        color: crimson;
+        font-size: 50px;
+    }
+    h1::after{
+    content: "";
+    background-color: #0000009e;
+    height: 2px;
+    width: 200px;
+    position: absolute;
+    top: 25%;
+    left: 30%;
+    }
+    form {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    flex-flow: column;
+    text-transform: capitalize;
+    }
+    input[type="text"],[type="email"],[type="number"]{
+    width: 100%;
+    padding: 10px 10px;
+    margin-bottom: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 10px;
+   }
+    
+    input[type=submit] {
+    width: 50%;
+    background-color: crimson;
+    color: white;
+    padding: 14px 20px;
+    margin: 0 80px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+
+input[type=submit]:hover {
+    background-color: white;
+    color: crimson;
+    border: 2px solid crimson;
+}
+</style> 
+    
+ <body>     
+     <div id="show" >
+         <h1> Fill the Form </h1>
+     </div>
+</body>
+    
+
+<script type="text/javascript">
+   
+     $(document).ready(function(){
+     var my_form=document.createElement('FORM'),fieldname,fieldtype,fieldvalue;
+//     my_form.name='myForm';
+//     my_form.method='POST';
+//     my_form.action='http://www.another_page.com/almakina.html';   
+$.ajax({
+      url: "https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/getFormSchema",
+      type: "GET",
+      success: function(response){
+          for (var property in response) {
+              if (response.hasOwnProperty(property)) {
+                  console.log('input text:',property);
+                  console.log('type:',response[property].type);
+                  console.log('value:',response[property].value);
+                   fieldname =property;
+                   fieldtype =response[property].type;
+                   fieldvalue=response[property].value;
+                   var my_tb=document.createElement('INPUT');
+                   var myTextNode = document.createTextNode(fieldname);
+                   if(fieldtype != "hidden"){
+                    my_form.appendChild(myTextNode); 
+                    }
+                    my_tb.type= fieldtype;
+                    my_tb.name=fieldname;
+//                    my_tb.value=fieldvalue;
+                    my_form.appendChild(my_tb);
+                  
+              }
+          }
+      }
+  })
+document.getElementById("show").appendChild(my_form);
+});
+         
+</script>
+    
+</html>

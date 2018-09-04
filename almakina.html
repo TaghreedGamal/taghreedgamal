@@ -74,12 +74,12 @@ input[type=submit]:hover {
     
 
 <script type="text/javascript">
-   
-     $(document).ready(function(){
-     var my_form=document.createElement('FORM'),fieldname,fieldtype,fieldvalue;
+        var my_form=document.createElement('FORM'),fieldname,fieldtype,fieldvalue;
+
+ $(document).ready(function(){
 //     my_form.name='myForm';
 //     my_form.method='POST';
-//     my_form.action='http://www.another_page.com/almakina.html';   
+//     my_form.action='file:///Users/youssef/Desktop/Almakinah%20LevelUp%20Assessment/almakina.html';   
 $.ajax({
       url: "https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/getFormSchema",
       type: "GET",
@@ -99,16 +99,59 @@ $.ajax({
                     }
                     my_tb.type= fieldtype;
                     my_tb.name=fieldname;
-//                    my_tb.value=fieldvalue;
+                    my_tb.value=fieldvalue;
+                   if(fieldtype=="checkbox"){
+                      if (fieldvalue==true){
+                          $(my_tb).prop('checked',true);
+
+                      }
+                  }                       
                     my_form.appendChild(my_tb);
                   
               }
           }
-      }
-  })
+      
 document.getElementById("show").appendChild(my_form);
+      }
+
 });
-         
+});
+    
+    
+$(document).on('submit','form',function(e){
+    var final = false;
+         if($('input[type=checkbox]').is(':checked')){
+             final = true;
+         }
+    var data={};
+    e.preventDefault();
+    $('input').each(function(){
+        console.log($(this).val())
+    })
+//var v=$( "input[name$='repo']").val();
+//    console.log(v)
+//});
+        var data = {
+             "name":$("input[name$='name']").val(),
+             "repo":$("input[name$='repo']").val(),
+             "email":$("input[name$='email']").val(),
+             "age":$( "input[name$='age']").val(),
+             "secret":$( "input[name$='secret']").val(),
+             "final_submission": final,
+         }
+        $.ajax({
+                url: 'https://levelup-assessment-backend-ddmwdsdlta.now.sh/api/submission',
+                type : "POST", 
+//                dataType : 'json', 
+                data :JSON.stringify(data),
+                contentType: "application/json",
+                success: function(response){
+                console.log(response);
+           }
+            })
+    console.log(data);
+});
+   
 </script>
     
 </html>
